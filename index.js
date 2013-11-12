@@ -276,8 +276,12 @@ module.exports = function(port) {
 					}
 					return multi.execQ();
 				}
-				this.save = function(attrs) {
+				this.save = function(attrs, opts) {
 					if(attrs) for(var attr in attrs) this.set(attr, attr.value, { quiet: true });
+					else {
+						attrs = {};
+						for(var attr in schema.attributes) if(this.changed[attr]) attrs[attr] = this.attributes[attr];
+					}
 
 					var that = this,
 						multi = client.multi();
