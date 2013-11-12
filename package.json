@@ -1,0 +1,10 @@
+{
+    "name": "redadder",
+	"version": "0.3.0",
+	"author": "Sigurd Rinde <sigurdr@gmail.com>",
+	"dependencies": {
+		"q": "*",
+		"redis": "*",
+		"hiredis": "*"
+	}
+}
