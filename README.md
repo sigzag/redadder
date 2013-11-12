@@ -4,10 +4,10 @@ redadder is a simple redis ORM for node.js. It implements simple access to objec
 
 ## Features
 - simple schemas
--- attributes
--- indexes
--- object relations
--- basic inheritance
+  - attributes
+  - indexes
+  - object relations
+  - basic inheritance
 - queries
 - custom events
 
