@@ -71,3 +71,4 @@ var Admin = red('admin', User, { // inheritance
 - binding events to classes (ie, User.bind('soforth');
 - formal collections (ie, so we can do things like user.get('friends').remove(steve);
 - implement natural functions for zsets, sets, etc. & allow for zsets with object values etc.
+- computed properties
