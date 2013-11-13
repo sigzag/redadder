@@ -1,6 +1,6 @@
 // UTIL
 var merge = function(a, b) { for(var i in b) if(!a[i]) a[i] = b[i]; }
-if(!Array.prototype.toJSON) Array.prototype.toJSON = function() {s
+if(!Array.prototype.toJSON) Array.prototype.toJSON = function() {
 	for(var i = 0, l = this.length, r = []; i < l; i++) r.push(this[i] && this[i].toJSON ? this[i].toJSON() : this[i]);
 	return r;
 }
@@ -21,7 +21,7 @@ for(var i = 0, command; command = commands[i]; i++) {
 			fn.apply(this, args);
 			return deferred.promise;
 		}
-	})(mongo.Collection.prototype[command]);
+	})(redis.RedisClient.prototype[command]);
 }
 redis.Multi.prototype.execQ = (function(fn) {
 	return function() {
@@ -126,7 +126,7 @@ module.exports = function(port) {
 			for(var i = 0; i < supers.length; i++) {
 				merge(schema.attributes, supers[i].schema.attributes);
 				for(var j = 0, attr; attr = supers[i].schema.indexes[j]; j++)
-					if(!~schema.indexes.indexOf(attr) schema.indexes.push(attr);
+					if(!~schema.indexes.indexOf(attr)) schema.indexes.push(attr);
 			}
 			
 			var parse = function(attr, raw) {
@@ -311,7 +311,7 @@ module.exports = function(port) {
 								return that.trigger('create', that).then(function() { return that; });
 							});
 						});
-					}):
+					});
 				}
 				this.destroy = function() {
 					var that = this;
@@ -348,7 +348,7 @@ module.exports = function(port) {
 				
 				for(var i = 0; i < ids.length; i++) ids[i] = parseInt(ids[i].id || ids[i]);
 				return client.hmgetQ('types', ids).then(function(types) {
-					for(var i = 0, multi = client.multi(); i < ids.length; i++)
+					for(var i = 0, multi = client.multi(); i < ids.length; i++) {
 						objects[i] = new (klass[types[i]] || klass)(ids[i]);
 						objects[i].getcommand(multi);
 					}
@@ -376,7 +376,7 @@ module.exports = function(port) {
 				deferred = new Q.defer(),
 				ids = [], objects = [];
 			var actions = {
-				test = function(ids, attr, test, against) {
+				test: function(ids, attr, test, against) {
 					if(!klass.schema.attributes[attr]) throw new Error('This attribute does not exist.');
 					if(arguments.length < 4) throw new Error('Missing arguments');
 
@@ -388,7 +388,7 @@ module.exports = function(port) {
 						return res;
 					});
 				},
-				sort = function(ids, attr) {
+				sort: function(ids, attr) {
 					if(!klass.schema.attributes[attr]) throw new Error('This attribute does not exist.');
 					if(arguments.length < 2) throw new Error('Missing arguments');
 
@@ -400,8 +400,8 @@ module.exports = function(port) {
 						return res;
 					});
 				},
-				skip = function(ids, skip) { return ids.slice(skip); },
-				limit = function(ids, limit) { return ids.slice(0, limit); }
+				skip: function(ids, skip) { return ids.slice(skip); },
+				limit: function(ids, limit) { return ids.slice(0, limit); }
 			}
 			for(var action in actions) deferred.promise[action] = (function(action) {
 				return function() {
