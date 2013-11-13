@@ -30,11 +30,10 @@ var User = red('user', // the name of the class
   }
 );
 
-// NOTE: the following block is an example of what will, soon, be possible to do
 User.bind('destroy', function(user) {
   return red.query(User).test('friends', 'includes', user).exec().then(function(users) {
     for(var i = 0, promises = []; i < users.length; i++) {
-      users[i].get('friends').remove(user); // lets pretend there's a remove function here...
+      users[i].get('friends').remove(user);
       promises.push(users[i].save());
     }
     return Q.all(promises);
@@ -68,7 +67,7 @@ var Admin = red('admin', User, { // inheritance
 
 
 ## Future
-- binding events to classes (ie, User.bind('soforth');
-- formal collections (ie, so we can do things like user.get('friends').remove(steve);
+- binding events to classes (ie, User.bind('soforth'); (done!)
+- formal collections (ie, so we can do things like user.get('friends').remove(steve); (done-ish!)
 - implement natural functions for zsets, sets, etc. & allow for zsets with object values etc.
 - computed properties
